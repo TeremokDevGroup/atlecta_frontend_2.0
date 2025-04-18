@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { login } from '../services/authService';
 
 export const LoginForm = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
@@ -12,14 +12,13 @@ export const LoginForm = () => {
         setError('');
 
         try {
-            const response = await login(email, password);
-            const token = response.data.token;
+            const response = await login(username, password);
+            const token = response.data.access_token;
 
             localStorage.setItem('token', token);
             alert('Успешный вход!');
-        } catch (err) {
-            console.error(err);
-            setError('Неверные данные');
+        } catch {
+            setError('Неверные данные для входа');
         }
     };
 
@@ -28,8 +27,8 @@ export const LoginForm = () => {
             <input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 className="border p-2 rounded"
                 required
             />
