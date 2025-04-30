@@ -1,21 +1,23 @@
 // src/components/LoginForm.tsx
 import { useState } from 'react';
 import { login } from '../services/authService';
+import { useAuthToken } from "../hooks/useAuthToken";
 
 export const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { setToken } = useAuthToken();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-
+    
         try {
             const response = await login(username, password);
             const token = response.data.access_token;
-
-            localStorage.setItem('token', token);
+    
+            setToken(token);
             alert('Успешный вход!');
         } catch {
             setError('Неверные данные для входа');
