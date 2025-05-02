@@ -16,7 +16,7 @@ export const LoginForm = () => {
         try {
             const response = await login(username, password);
             const token = response.data.access_token;
-    
+            console.log(response.data.access_token);
             setToken(token);
             alert('Успешный вход!');
         } catch {
@@ -49,3 +49,5 @@ export const LoginForm = () => {
         </form>
     );
 };
+
+
