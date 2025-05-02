@@ -1,6 +1,11 @@
-import http from "./http";
+import { http } from "./http";
 
 export const getTags = async (): Promise<string[]> => {
-  const res = await http.get("/sports/"); //#TODO: Update the endpoint to fetch tags
-  return res.data.map((tag: { name: string }) => tag.name);
+  try {
+    const res = await http.get("/sports/"); // #TODO: Update the endpoint to fetch tags
+    return res.data.map((tag: { name: string }) => tag.name);
+  } catch (error) {
+    console.error("Ошибка при получении тегов:", error);
+    throw error; // Выбросим ошибку для дальнейшей обработки
+  }
 };

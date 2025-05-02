@@ -1,10 +1,10 @@
 // src/services/authService.ts
-import http from './http';
+import { http, setAccessToken } from './http';
 
 /**
  * Отправка данных для авторизации в формате application/x-www-form-urlencoded
  */
-export const login = (username: string, password: string) => {
+export const login = async (username: string, password: string) => {
   const payload = new URLSearchParams();
   payload.append('grant_type', 'password');
   payload.append('username', username);
@@ -13,7 +13,13 @@ export const login = (username: string, password: string) => {
   payload.append('client_id', 'string');
   payload.append('client_secret', 'string');
 
-  return http.post('/auth/jwt/login', payload);
+  const response = await http.post('/auth/jwt/login', payload);
+
+  if (response.data.access_token) {
+    setAccessToken(response.data.access_token);
+  }
+
+  return response;
 };
 
 /**

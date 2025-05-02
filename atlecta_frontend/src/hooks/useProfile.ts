@@ -1,7 +1,7 @@
 // src/hooks/useProfile.ts
 import { useEffect, useState } from 'react';
 import { UserProfile } from '../types/user';
-import http from '../services/http';
+import { http } from '../services/http';
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -9,9 +9,9 @@ export const useProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await http.get('/users/profiles/me/'); // Убедись, что эндпоинт правильный
+        const response = await http.get('/users/profiles/me/');
         console.log('Ответ от сервера с профилем:', response.data);
-        setProfile(response.data); // Запишем данные профиля в стейт
+        setProfile(response.data);
       } catch (error) {
         console.error('Ошибка загрузки профиля:', error);
       }
@@ -22,7 +22,7 @@ export const useProfile = () => {
 
   const updateProfile = async (updatedData: UserProfile) => {
     try {
-      await http.put(`/users/profiles/`, updatedData); 
+      await http.put(`/users/profiles/`, updatedData);
       console.log('Профиль обновлён:', updatedData);
     } catch (error) {
       console.error('Ошибка обновления профиля:', error);
