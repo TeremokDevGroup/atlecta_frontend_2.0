@@ -20,23 +20,27 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
     tags: [] as string[],
   });
   const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     getTags().then(setAvailableTags);
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, multiple, selectedOptions } = e.target as HTMLSelectElement;
-    if (name === "tags" && multiple) {
-      const selected = Array.from(selectedOptions).map((o) => o.value);
-      setFormData({ ...formData, tags: selected });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const toggleTagSelection = (tag: string) => {
+    setFormData((prevData) => {
+      const isSelected = prevData.tags.includes(tag);
+      const newTags = isSelected
+        ? prevData.tags.filter((item) => item !== tag)
+        : [...prevData.tags, tag];
+      return { ...prevData, tags: newTags };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,19 +95,37 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         onChange={handleChange}
         required
       />
-      <select
-        name="tags"
-        multiple
-        className="w-full border p-2 rounded h-24"
-        onChange={handleChange}
-        value={formData.tags}
-      >
-        {availableTags.map((tag, i) => (
-          <option key={i} value={tag}>
-            {tag}
-          </option>
-        ))}
-      </select>
+
+      {/* Кастомный мультивыбор */}
+      <div className="relative">
+        <div
+          className="border p-2 rounded cursor-pointer"
+          onClick={() => setDropdownOpen((prev) => !prev)}
+        >
+          {formData.tags.length
+            ? formData.tags.join(", ")
+            : "Выберите теги"}
+        </div>
+        {dropdownOpen && (
+          <div className="absolute mt-1 z-10 bg-white border rounded shadow w-full max-h-48 overflow-y-auto">
+            {availableTags.map((tag, i) => (
+              <label
+                key={i}
+                className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={formData.tags.includes(tag)}
+                  onChange={() => toggleTagSelection(tag)}
+                  className="mr-2"
+                />
+                <span className="text-black">{tag}</span>
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="flex justify-between">
         <button
           type="button"
