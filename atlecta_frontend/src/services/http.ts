@@ -1,8 +1,7 @@
 // src/services/http.ts
 import axios from 'axios';
 
-
-const TOKEN_LIFETIME = 3600 * 1000; //millisecond
+const TOKEN_LIFETIME = 3600 * 1000; // milliseconds
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -11,7 +10,7 @@ const http = axios.create({
   },
 });
 
-// Функция для получения токена с проверкой времени его истечения
+// Получение токена с проверкой времени истечения
 const getAccessToken = () => {
   const token = localStorage.getItem('access_token');
   const expiry = localStorage.getItem('token_expiry');
@@ -23,14 +22,20 @@ const getAccessToken = () => {
   return null;
 };
 
-// Функция для сохранения токена с его временем истечения
+// Сохранение токена с временем истечения
 const setAccessToken = (token: string) => {
-  const expiryTime = Date.now() + TOKEN_LIFETIME; // Устанавливаем время истечения токена
+  const expiryTime = Date.now() + TOKEN_LIFETIME;
   localStorage.setItem('access_token', token);
   localStorage.setItem('token_expiry', expiryTime.toString());
 };
 
-// Интерцептор запроса для добавления токена в заголовки запроса
+// Удаление токена
+const clearAccessToken = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('token_expiry');
+};
+
+// Интерцептор запроса — добавляет токен
 http.interceptors.request.use((config) => {
   const token = getAccessToken();
   if (token) {
@@ -39,16 +44,15 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
-// Интерцептор для ответа (если токен истек, удаляем его)
+// Интерцептор ответа — удаляет токен при 401
 http.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('token_expiry');
+      clearAccessToken();
     }
     return Promise.reject(error);
   }
 );
 
-export { http, setAccessToken };
+export { http, setAccessToken, getAccessToken, clearAccessToken };
