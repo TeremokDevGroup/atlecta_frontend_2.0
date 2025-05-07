@@ -8,16 +8,26 @@ export const getPlacemarks = async (): Promise<Placemark[]> => {
     return res.data;
   } catch (error) {
     console.error('Ошибка при получении меток:', error);
-    throw error; // Выбросим ошибку, чтобы обработать её в месте вызова
+    throw error; 
   }
 };
 
 // Создание новой метки
+
 export const createPlacemark = async (data: Placemark): Promise<void> => {
   try {
-    await http.post("/sports/object/", data);
+    const { name, x_coord, y_coord, address, tags } = data;
+
+    const params = new URLSearchParams({
+      name,
+      x_coord: x_coord.toString(),
+      y_coord: y_coord.toString(),
+      address,
+    });
+
+    await http.post(`/sports/objects?${params.toString()}`, tags);
   } catch (error) {
-    console.error('Ошибка при создании метки:', error);
-    throw error; // Выбросим ошибку для дальнейшей обработки
+    console.error("Ошибка при создании метки:", error);
+    throw error;
   }
 };
