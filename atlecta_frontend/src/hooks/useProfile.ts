@@ -22,7 +22,7 @@ export const useProfile = () => {
 
   const updateProfile = async (updatedData: UserProfile) => {
     try {
-      await http.put(`/users/profiles/`, updatedData);
+      await http.patch(`/users/profiles/me`, updatedData);
       console.log('Профиль обновлён:', updatedData);
     } catch (error) {
       console.error('Ошибка обновления профиля:', error);
