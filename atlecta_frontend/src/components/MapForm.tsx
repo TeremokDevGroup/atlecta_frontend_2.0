@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
-import { createPlacemark } from "../services/placemarkService";
+import { getPlacemarks, createPlacemark } from "../services/placemarkService";
 import { getTags } from "../services/tagService";
-
+import type { PlacemarkClickInfo, Placemark } from "../types/placemark";
 interface MapFormProps {
-  initialCoords: {
-    x_coord: number;
-    y_coord: number;
-    address: string;
-  };
+  initialCoords: PlacemarkClickInfo;
   onClose: () => void;
 }
 
 const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Placemark, "id">>({
     name: "",
     x_coord: initialCoords.x_coord,
     y_coord: initialCoords.y_coord,
     address: initialCoords.address,
-    tags: [] as string[],
+    tags: [],
   });
+
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -30,28 +27,26 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "x_coord" || name === "y_coord" ? parseFloat(value) : value,
+    }));
   };
 
   const toggleTagSelection = (tag: string) => {
     setFormData((prevData) => {
-      const isSelected = prevData.tags.includes(tag);
+      const isSelected = prevData.tags.some((t) => t.name === tag);
       const newTags = isSelected
-        ? prevData.tags.filter((item) => item !== tag)
-        : [...prevData.tags, tag];
+        ? prevData.tags.filter((t) => t.name !== tag)
+        : [...prevData.tags, { name: tag }];
       return { ...prevData, tags: newTags };
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...formData,
-      x_coord: parseFloat(formData.x_coord.toString()),
-      y_coord: parseFloat(formData.y_coord.toString()),
-      tags: formData.tags.map((tag) => ({ name: tag })),
-    };
-    await createPlacemark(payload);
+    await createPlacemark(formData);
+    await getPlacemarks(); // Предположим, для обновления карты
     alert("Точка добавлена!");
     onClose();
   };
@@ -103,19 +98,19 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
           onClick={() => setDropdownOpen((prev) => !prev)}
         >
           {formData.tags.length
-            ? formData.tags.join(", ")
+            ? formData.tags.map((t) => t.name).join(", ")
             : "Выберите теги"}
         </div>
         {dropdownOpen && (
           <div className="absolute mt-1 z-10 bg-white border rounded shadow w-full max-h-48 overflow-y-auto">
-            {availableTags.map((tag, i) => (
+            {availableTags.map((tag) => (
               <label
-                key={i}
+                key={tag}
                 className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
               >
                 <input
                   type="checkbox"
-                  checked={formData.tags.includes(tag)}
+                  checked={formData.tags.some((t) => t.name === tag)}
                   onChange={() => toggleTagSelection(tag)}
                   className="mr-2"
                 />
