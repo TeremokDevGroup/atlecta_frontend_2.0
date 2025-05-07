@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlacemarks, createPlacemark } from "../services/placemarkService";
+import { createPlacemark } from "../services/placemarkService";
 import { getTags } from "../services/tagService";
 import type { PlacemarkClickInfo, Placemark } from "../types/placemark";
 interface MapFormProps {
@@ -46,7 +46,6 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await createPlacemark(formData);
-    await getPlacemarks(); // Предположим, для обновления карты
     alert("Точка добавлена!");
     onClose();
   };
