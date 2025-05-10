@@ -1,21 +1,26 @@
-import { Placemark as YPlacemark } from '@pbe/react-yandex-maps';
-import { usePlacemarkData } from '../hooks/usePlacermarkData';
+import { useEffect, useState } from "react";
+import { Placemark } from "@pbe/react-yandex-maps";
+import { getPlacemarks } from "../services/placemarkService";
+import { Placemark as PlacemarkType } from "../types/placemark";
 
-const PlacemarkList = () => {
-  const { placemarks } = usePlacemarkData();
+interface Props {
+  onSelectPlacemark: (placemark: PlacemarkType) => void;
+}
+
+const PlacemarkList = ({ onSelectPlacemark }: Props) => {
+  const [placemarks, setPlacemarks] = useState<PlacemarkType[]>([]);
+
+  useEffect(() => {
+    getPlacemarks().then(setPlacemarks).catch(console.error);
+  }, []);
 
   return (
     <>
-      {placemarks.map((item) => (
-        <YPlacemark
-          key={item.id}
-          geometry={[item.x_coord, item.y_coord]}
-          properties={{
-            balloonContent: `
-              <strong>${item.name}</strong><br/>
-              <br>${item.address}<br/>
-              Теги: ${item.tags.map((tag) => tag.name).join(', ')}`
-          }}
+      {placemarks.map((mark) => (
+        <Placemark
+          key={mark.id}
+          geometry={[mark.x_coord, mark.y_coord]}
+          onClick={() => onSelectPlacemark(mark)}
         />
       ))}
     </>

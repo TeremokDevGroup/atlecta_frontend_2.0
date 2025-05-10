@@ -1,7 +1,13 @@
 import { YMaps, Map } from "@pbe/react-yandex-maps";
 import PlacemarkList from "./PlacemarkList";
+import { Placemark as PlacemarkType } from "../types/placemark";
 
-const YandexMap = ({ onMapClick }: { onMapClick?: (info: { x_coord: number; y_coord: number; address: string }) => void }) => {
+interface Props {
+  onMapClick?: (info: { x_coord: number; y_coord: number; address: string }) => void;
+  onPlacemarkClick?: (placemark: PlacemarkType) => void;
+}
+
+const YandexMap = ({ onMapClick, onPlacemarkClick }: Props) => {
   const handleClick = async (e: ymaps.MapEvent) => {
     const coords = e.get("coords");
     const [lat, lon] = coords;
@@ -13,24 +19,13 @@ const YandexMap = ({ onMapClick }: { onMapClick?: (info: { x_coord: number; y_co
     const address =
       data.response.GeoObjectCollection.featureMember[0]?.GeoObject?.metaDataProperty?.GeocoderMetaData?.text || "";
 
-    if (onMapClick) {
-      onMapClick({ x_coord: lat, y_coord: lon, address });
-    }
+    onMapClick?.({ x_coord: lat, y_coord: lon, address });
   };
 
   return (
     <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_MAP_API_KEY }}>
-      <Map
-        defaultState={{
-          center: [56.0105, 92.8526],
-          zoom: 12,
-        }}
-        width="100%"
-        height="100%"
-        onClick={handleClick} // если ты передаёшь через пропсы
-      >
-
-        <PlacemarkList />
+      <Map defaultState={{ center: [56.01, 92.85], zoom: 12 }} width="100%" height="100%" onClick={handleClick}>
+        <PlacemarkList onSelectPlacemark={onPlacemarkClick!} />
       </Map>
     </YMaps>
   );
