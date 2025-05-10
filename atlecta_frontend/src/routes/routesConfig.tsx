@@ -1,5 +1,5 @@
 // src/routes/routesConfig.ts
-import { YandexMapPage } from "../pages/YandexMapPage";
+import YandexMapPage from "../pages/YandexMapPage";
 import ProfilePage from "../pages/ProfilePage";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
