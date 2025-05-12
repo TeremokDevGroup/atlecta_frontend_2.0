@@ -16,7 +16,6 @@ export const useProfile = () => {
         console.error('Ошибка загрузки профиля:', error);
       }
     };
-
     fetchProfile();
   }, []);
 
@@ -29,5 +28,26 @@ export const useProfile = () => {
     }
   };
 
-  return { profile, updateProfile };
+  const uploadProfileImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      await http.post('/users/profiles/me/profile_image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      // Обновить профиль после загрузки фото
+      const response = await http.get('/users/profiles/me/');
+      setProfile(response.data);
+    } catch (error) {
+      console.error('Ошибка загрузки изображения:', error);
+      throw error;
+    }
+  };
+
+  return { profile, updateProfile, uploadProfileImage };
 };
+
+
+
+
