@@ -17,6 +17,14 @@ const Navbar = () => {
         <li><NavLink to="/profile" className={({ isActive }) => isActive ? "underline" : ""}>Профиль</NavLink></li>
         <li><NavLink to="/login" className={({ isActive }) => isActive ? "underline" : ""}>Вход</NavLink></li>
         <li><NavLink to="/register" className={({ isActive }) => isActive ? "underline" : ""}>Регистрация</NavLink></li>
+        <li>
+          <NavLink
+            to="/users/profiles"
+            className={({ isActive }) => (isActive ? "underline" : "")}
+          >
+            Пользователи
+          </NavLink>
+        </li>
         {isAuth && (
           <li>
             <NavLink
