@@ -8,10 +8,13 @@ export default {
     "./src/components/MapForm.tsx",
     "./src/components/PlacemarkSidebar.tsx",
     "./src/components/ProfileForm.tsx",
+    "./src/components/UserCard.tsx",
+    //pages
     "./src/pages/YandexMapPage.tsx",
     "./src/pages/ProfilePage.tsx",
     "./src/pages/LoginPage.tsx",
     "./src/pages/RegisterPage.tsx",
+    "./src/pages/FeedPage.tsx",
     "./src/pages/NotFound.tsx",
   ],
   theme: {
