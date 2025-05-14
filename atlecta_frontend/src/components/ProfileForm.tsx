@@ -2,24 +2,20 @@ import { useEffect, useState } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import { UserProfile } from '../types/user';
 import { getTags } from '../services/tagService';
-import { getUserProfileImages } from "../services/userService";
 
 export const ProfileForm = () => {
   const { profile, updateProfile, uploadProfileImage } = useProfile();// Хук useProfile для получения и обновления профиля
   const [formData, setFormData] = useState<UserProfile | null>(null);
   const [availableSports, setAvailableSports] = useState<string[]>([]);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
 
   useEffect(() => {
     if (profile) {
       getTags().then(setAvailableSports).catch(console.error);
       setFormData(profile);
-      if (profile) {
-        getUserProfileImages(profile.user_id).then(setProfilePicture);
-      }
     }
   }, [profile]);
 
@@ -81,8 +77,8 @@ export const ProfileForm = () => {
       {/* Image */}
       <div className="flex justify-center">
         <div className="w-full h-40 bg-gray-300 rounded-md mb-4 overflow-hidden flex items-center justify-center">
-          {profilePicture ? (
-            <img src={profilePicture} alt="Фото профиля" className="w-full h-full object-cover" />
+          {formData?.images?.length > 0 && formData.images[0].url ? (
+            <img src={formData.images[0].url} alt="Фото профиля" className="w-full h-full object-cover" />
           ) : (
             <span className="text-gray-600 text-sm">Фото отсутствует</span>
           )}

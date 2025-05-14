@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserProfile } from "../types/user";
-import { getUserProfileImages } from "../services/userService"; // добавить
 
 interface Props {
   user: UserProfile;
@@ -9,13 +8,8 @@ interface Props {
 
 const UserCard = ({ user, onClick }: Props) => {
   const [showAllTags, setShowAllTags] = useState(false);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   const visibleTags = showAllTags ? user.sports : user.sports.slice(0, 2);
-
-  useEffect(() => {
-    getUserProfileImages(user.user_id).then(setProfilePicture);
-  }, [user.user_id]);
 
   return (
     <div
@@ -24,9 +18,9 @@ const UserCard = ({ user, onClick }: Props) => {
     >
       {/* Фото */}
       <div className="w-full h-40 bg-gray-300 rounded-md mb-4 overflow-hidden flex items-center justify-center">
-        {profilePicture ? (
+        {user?.images?.length > 0 && user.images[0].url ? (
           <img
-            src={profilePicture}
+            src={user.images[0].url}
             alt="Фото профиля"
             className="object-cover w-full h-full rounded-md"
           />

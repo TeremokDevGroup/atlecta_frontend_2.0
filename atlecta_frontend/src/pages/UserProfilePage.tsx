@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserProfileById, getUserProfileImages } from "../services/userService";
+import { getUserProfileById } from "../services/userService";
 import { UserProfile } from "../types/user";
 
 export const UserProfilePage = () => {
   const { user_id } = useParams();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -16,10 +15,6 @@ export const UserProfilePage = () => {
         .then(setProfile)
         .catch(console.error)
         .finally(() => setLoading(false));
-
-      getUserProfileImages(user_id)
-        .then(setProfilePicture)
-        .catch(console.error);
     }
 
   }, [user_id]);
@@ -30,15 +25,16 @@ export const UserProfilePage = () => {
   return (
     <div className="min-h-screen bg-white pt-14 px-4">
       <div className="max-w-xl mx-auto p-6 bg-gray-50 border rounded-xl shadow">
-        {profilePicture && (
+        {profile?.images?.length > 0 && profile.images[0].url && (
           <div className="w-full h-40 bg-gray-300 rounded-md mb-4 overflow-hidden flex items-center justify-center">
             <img
-              src={profilePicture}
+              src={profile.images[0].url}
               alt="Фото профиля"
               className="w-full h-full object-cover"
             />
           </div>
         )}
+
         <h1 className="text-3xl font-bold mb-4 text-black">
           {profile.first_name} {profile.last_name}
         </h1>

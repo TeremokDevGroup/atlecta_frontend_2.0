@@ -8,7 +8,7 @@ export interface UserProfile {
   sports: { name: string }[];
   user_id: string;
   bio: string;
-  profile_picture?: string;
+  images: UserImage[];
 }
 
 export interface UserImage {
