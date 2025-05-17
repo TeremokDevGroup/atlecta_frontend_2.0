@@ -55,6 +55,7 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
       onSubmit={handleSubmit}
       className="bg-white p-4 rounded-lg shadow-md space-y-3 text-sm"
     >
+      <label className='text-black'>Название</label>
       <input
         className="w-full border p-2 rounded"
         name="name"
@@ -63,6 +64,7 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         onChange={handleChange}
         required
       />
+      <label className='text-black'>Широта</label>
       <input
         className="w-full border p-2 rounded"
         name="x_coord"
@@ -72,6 +74,7 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         required
         type="number"
       />
+      <label className='text-black'>Долгота</label>
       <input
         className="w-full border p-2 rounded"
         name="y_coord"
@@ -81,6 +84,7 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         required
         type="number"
       />
+      <label className='text-black'>Адрес</label>
       <input
         className="w-full border p-2 rounded"
         name="address"
@@ -89,9 +93,9 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         onChange={handleChange}
         required
       />
-
+      <label className='text-black'>Теги</label>
       {/* Кастомный мультивыбор */}
-      <div className="relative">
+      <div className="relative text-black">
         <div
           className="border p-2 rounded cursor-pointer"
           onClick={() => setDropdownOpen((prev) => !prev)}
