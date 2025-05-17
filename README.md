@@ -20,12 +20,13 @@ cd <project-directory>
 
 yarn install
 # or
-npm install
+npm install (use -f if you encounter errors during installation)
 
 Create a .env file in the project root with the following variables:
 VITE_YANDEX_MAP_API_KEY=your_yandex_maps_api_key
 VITE_API_KEY=your_api_key
 VITE_API_URL=your_api_base_url
+VITE_IMAGE_BASE_URL=your_api_base_image_url
 
 Development
 yarn dev
