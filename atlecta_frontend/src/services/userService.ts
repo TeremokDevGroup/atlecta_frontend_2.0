@@ -19,7 +19,7 @@ export const getUserProfiles = async (): Promise<UserProfile[]> => {
 
 
 export const getUserProfileById = async (id: string): Promise<UserProfile> => {
-  const response = await http.get<UserProfile>(`/users/profiles/${id}`);
+  const response = await http.get<UserProfile>(`/users/pfdsfsdsdrofiles/${id}`);
 
   const modifiedProfile: UserProfile = {
     ...response.data,
