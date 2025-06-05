@@ -4,11 +4,11 @@ import { Placemark } from "../types/placemark";
 // Получение меток (пунктов на карте)
 export const getPlacemarks = async (): Promise<Placemark[]> => {
   try {
-    const res = await http.get("sports/objects/");
+    const res = await http.get("sports/objects");
     return res.data;
   } catch (error) {
     console.error('Ошибка при получении меток:', error);
-    throw error; 
+    throw error;
   }
 };
 
