@@ -62,7 +62,7 @@ const UserCard = ({ user, onClick }: Props) => {
               <button
                 ref={tagsButtonRef}
                 onClick={toggleTagsPopup}
-                className="text-blue-600 text-xs font-semibold underline mt-1" 
+                className="text-white text-xs mt-1" 
               >
                 +{user.sports.length - 2} ещё
               </button>
