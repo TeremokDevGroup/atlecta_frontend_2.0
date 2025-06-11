@@ -6,25 +6,25 @@ import { http } from '../services/http';
 export const useProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const response = await http.get<UserProfile>("/users/profiles/me/");
-      const data = response.data;
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await http.get<UserProfile>("/users/profiles/me");
+        const data = response.data;
 
-      const updatedImages = data.images.map((image: UserImage) => ({
-        ...image,
-        url: image.url ? `${import.meta.env.VITE_IMAGE_BASE_URL}${image.url}` : "",
-      }));
+        const updatedImages = data.images.map((image: UserImage) => ({
+          ...image,
+          url: image.url ? `${import.meta.env.VITE_IMAGE_BASE_URL}${image.url}` : "",
+        }));
 
-      setProfile({ ...data, images: updatedImages });
-    } catch (error) {
-      console.error("Ошибка загрузки профиля:", error);
-    }
-  };
+        setProfile({ ...data, images: updatedImages });
+      } catch (error) {
+        console.error("Ошибка загрузки профиля:", error);
+      }
+    };
 
-  fetchProfile();
-}, []);
+    fetchProfile();
+  }, []);
 
   const updateProfile = async (updatedData: UserProfile) => {
     try {
@@ -44,7 +44,7 @@ useEffect(() => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       // Обновить профиль после загрузки фото
-      const response = await http.get('/users/profiles/me/');
+      const response = await http.get('/users/profiles/me');
       setProfile(response.data);
     } catch (error) {
       console.error('Ошибка загрузки изображения:', error);

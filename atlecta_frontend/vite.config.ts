@@ -10,6 +10,6 @@ export default defineConfig({
     // 	methods: ['GET', 'POST'],
     // 	allowedHeaders: ['Content-Type']
     // },
-    allowedHosts: ['atlecta.ru'] //added this
+    allowedHosts: ['atlecta.ru', 'api.atlecta.ru'] //added this
   }
 });

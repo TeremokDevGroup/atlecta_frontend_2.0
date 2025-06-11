@@ -33,7 +33,7 @@ export const getUserProfileById = async (id: string): Promise<UserProfile> => {
 };
 
 export const getAllUsers = async (): Promise<UserProfile[]> => {
-  const response = await http.get<UserProfile[]>("/users/profiles/");
+  const response = await http.get<UserProfile[]>("/users/profiles");
 
   const modifiedProfiles = response.data.map((profile) => ({
     ...profile,
