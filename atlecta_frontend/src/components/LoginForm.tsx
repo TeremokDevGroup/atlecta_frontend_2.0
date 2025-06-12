@@ -35,7 +35,7 @@ export const LoginForm = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-5 py-4 border border-gray-300 rounded-lg focus:outline-none 
-                                  focus:ring-2 focus:ring-blue-500 text-gray-700 placeholder-gray-400"
+                                  focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
                         required
                     />
                 </div>
@@ -46,7 +46,7 @@ export const LoginForm = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="w-full px-5 py-4 border border-gray-300 rounded-lg focus:outline-none 
-                                  focus:ring-2 focus:ring-blue-500 text-gray-700 placeholder-gray-400"
+                                  focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
                         required
                     />
                 </div>
