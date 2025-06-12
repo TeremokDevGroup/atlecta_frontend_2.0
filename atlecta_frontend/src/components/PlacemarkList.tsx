@@ -37,7 +37,7 @@ const PlacemarkList = ({ onSelectPlacemark, filters }: Props) => {
       {placemarks.map((mark) => (
         <Placemark
           key={mark.id}
-          geometry={[mark.y_coord, mark.x_coord]}
+          geometry={[mark.x_coord, mark.y_coord]}
           onClick={() => onSelectPlacemark(mark)}
         />
       ))}
