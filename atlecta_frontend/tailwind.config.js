@@ -10,6 +10,7 @@ export default {
     "./src/components/ProfileForm.tsx",
     "./src/components/UserCard.tsx",
     "./src/components/Navbar.tsx",
+    "./src/components/MapFilter.tsx",
     //pages
     "./src/pages/YandexMapPage.tsx",
     "./src/pages/Chat.tsx",

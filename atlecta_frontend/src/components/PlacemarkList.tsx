@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
 import { Placemark } from "@pbe/react-yandex-maps";
-import { getPlacemarks } from "../services/placemarkService";
+import { getPlacemarks, getFilteredPlacemarks } from "../services/placemarkService";
 import { Placemark as PlacemarkType } from "../types/placemark";
 
 interface Props {
   onSelectPlacemark: (placemark: PlacemarkType) => void;
+  filters?: { types: string[] }; // Убедимся, что filters есть и имеет правильный тип
 }
 
-const PlacemarkList = ({ onSelectPlacemark }: Props) => {
+const PlacemarkList = ({ onSelectPlacemark, filters }: Props) => {
   const [placemarks, setPlacemarks] = useState<PlacemarkType[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getPlacemarks()
-      .then(setPlacemarks)
-      .catch((err) => {
+    const fetchPlacemarks = async () => {
+      try {
+        const data = filters?.types?.length
+          ? await getFilteredPlacemarks(filters)
+          : await getPlacemarks();
+        setPlacemarks(data);
+      } catch (err) {
         console.error(err);
         setError("Не удалось загрузить объекты.");
-      });
-  }, []);
+      }
+    };
+
+    fetchPlacemarks();
+  }, [filters]);
 
   const closeErrorModal = () => {
     setError(null);
@@ -34,7 +42,6 @@ const PlacemarkList = ({ onSelectPlacemark }: Props) => {
         />
       ))}
 
-      {/* Модальное окно ошибки */}
       {error && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
