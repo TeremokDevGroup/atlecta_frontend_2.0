@@ -33,7 +33,6 @@ export const createPlacemark = async (data: Placemark): Promise<void> => {
 };
 
 //Получение меток после обработки фильтрами
-//#TODO Возможно изменить способ отправки данных
 
 export const getFilteredPlacemarks = async (filters: { types?: string[] }): Promise<Placemark[]> => {
   try {
