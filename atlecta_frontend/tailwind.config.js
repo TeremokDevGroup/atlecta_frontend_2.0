@@ -11,6 +11,7 @@ export default {
     "./src/components/UserCard.tsx",
     "./src/components/Navbar.tsx",
     "./src/components/MapFilter.tsx",
+    "./src/components/UserFilter.tsx",
     //pages
     "./src/pages/YandexMapPage.tsx",
     "./src/pages/Chat.tsx",
