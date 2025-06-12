@@ -35,7 +35,7 @@ export const UserProfilePage = () => {
       <div className="relative w-full h-80 bg-gray-100">
         {profile?.images?.length > 0 && profile.images[0].url ? (
           <img
-            src={profile.images[0].url}
+            src={profile.images[profile.images.length - 1].url}
             alt="Фото профиля"
             className="w-full h-full object-cover"
           />

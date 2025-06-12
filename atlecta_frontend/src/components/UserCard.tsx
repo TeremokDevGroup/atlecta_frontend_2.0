@@ -26,7 +26,7 @@ const UserCard = ({ user, onClick }: Props) => {
         <div className="w-full h-40 bg-gray-200 rounded-md mb-3 overflow-hidden flex items-center justify-center">
           {user?.images?.length > 0 && user.images[0].url ? (
             <img
-              src={user.images[0].url}
+              src={user.images[user.images.length - 1].url}
               alt="Фото профиля"
               className="object-cover w-full h-full rounded-md"
             />
@@ -82,7 +82,7 @@ const UserCard = ({ user, onClick }: Props) => {
           }}
         >
           <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto"> {/* Уменьшен gap между тегами */}
-            {user.sports.map((tag, index) => (
+            {user.sports.slice(2).map((tag, index) => (
               <span
                 key={index}
                 className="bg-gray-800 text-white text-xs px-2 py-1 rounded-md font-semibold"

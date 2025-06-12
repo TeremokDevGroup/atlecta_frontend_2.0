@@ -82,7 +82,7 @@ export const ProfileForm = () => {
           <div className="flex flex-col items-center mb-6">
             <div className="w-32 h-32 rounded-full bg-gray-200 mb-4 overflow-hidden border-4 border-blue-100 shadow">
               {formData?.images?.[0]?.url ? (
-                <img src={formData.images[0].url} alt="Фото профиля" className="w-full h-full object-cover" />
+                <img src={formData.images[formData.images.length - 1].url} alt="Фото профиля" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-500">
                   <span>Нет фото</span>
