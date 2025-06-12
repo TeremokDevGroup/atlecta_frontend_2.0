@@ -47,7 +47,7 @@ const PlacemarkSidebar = ({ placemark, onClose }: Props) => {
         placemark ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col mt-10">
         {/* Шапка сайдбара */}
         <div className="p-5 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
           <div className="flex justify-between items-center">
