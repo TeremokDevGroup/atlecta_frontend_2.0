@@ -4,7 +4,7 @@ import { Placemark } from "../types/placemark";
 // Получение меток (пунктов на карте)
 export const getPlacemarks = async (): Promise<Placemark[]> => {
   try {
-    const res = await http.get("sports/objects");
+    const res = await http.get("sports/objects/all");
     return res.data;
   } catch (error) {
     console.error('Ошибка при получении меток:', error);
@@ -28,6 +28,20 @@ export const createPlacemark = async (data: Placemark): Promise<void> => {
     await http.post(`/sports/objects?${params.toString()}`, tags);
   } catch (error) {
     console.error("Ошибка при создании метки:", error);
+    throw error;
+  }
+};
+
+//Получение меток после обработки фильтрами
+//#TODO Возможно изменить способ отправки данных
+
+export const getFilteredPlacemarks = async (filters: { types?: string[] }): Promise<Placemark[]> => {
+  try {
+    const params = filters.types?.length ? `?tag__name__in=${filters.types.join(',')}` : '';
+    const res = await http.get(`sports/objects${params}`); //change url
+    return res.data;
+  } catch (error) {
+    console.error('Ошибка при получении отфильтрованных меток:', error);
     throw error;
   }
 };
