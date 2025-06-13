@@ -173,6 +173,30 @@ const PlacemarkSidebar = ({ placemark, onClose }: Props) => {
                   ))}
                 </div>
               </div>
+
+              {/* Инвентарь */}
+              <div className="space-y-2">
+                <h4 className="text-lg font-semibold text-gray-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z" />
+                  </svg>
+                  Инвентарь
+                </h4>
+                {placemark.inventory && placemark.inventory.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {placemark.inventory.map((item, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium"
+                      >
+                        {item.inventory.name} ({item.amount})
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">Инвентарь не указан</p>
+                )}
+              </div>
             </>
           ) : (
             <div className="text-center py-8 text-gray-500">
@@ -184,8 +208,8 @@ const PlacemarkSidebar = ({ placemark, onClose }: Props) => {
           )}
         </div>
 
-        {/* Футер
-        {placemark && (
+        {/* Футер */}
+        {/* {placemark && (
           <div className="p-4 border-t border-gray-200 bg-gray-50">
             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
