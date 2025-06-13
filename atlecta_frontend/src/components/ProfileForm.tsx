@@ -10,6 +10,9 @@ export const ProfileForm = () => {
   const [availableSports, setAvailableSports] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(
+    formData?.images?.length ? formData.images.length - 1 : 0
+  );
 
   useEffect(() => {
     if (profile) {
@@ -80,12 +83,60 @@ export const ProfileForm = () => {
         <div className="p-6">
           {/* Аватар */}
           <div className="flex flex-col items-center mb-6">
-            <div className="w-32 h-32 rounded-full bg-gray-200 mb-4 overflow-hidden border-4 border-blue-100 shadow">
-              {formData?.images?.[0]?.url ? (
-                <img src={formData.images[formData.images.length - 1].url} alt="Фото профиля" className="w-full h-full object-cover" />
+            <div className="w-full h-64 rounded-lg bg-gray-200 mb-4 overflow-hidden shadow-lg relative">
+              {formData?.images?.length ? (
+                <>
+                  {/* Основное изображение с использованием currentImageIndex */}
+                  <img
+                    src={formData.images[currentImageIndex].url}
+                    alt="Фото профиля"
+                    className="w-full h-full object-cover transition-opacity duration-300"
+                  />
+
+                  {/* Навигация по карусели */}
+                  {formData.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setCurrentImageIndex(prev =>
+                          (prev - 1 + formData.images.length) % formData.images.length
+                        )}
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all z-10"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+
+                      <button
+                        onClick={() => setCurrentImageIndex(prev =>
+                          (prev + 1) % formData.images.length
+                        )}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md transition-all z-10"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+
+                      {/* Индикаторы с активным состоянием */}
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                        {formData.images.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`w-3 h-3 rounded-full transition-all ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                              }`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-500">
-                  <span>Нет фото</span>
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
                 </div>
               )}
             </div>
@@ -207,14 +258,14 @@ export const ProfileForm = () => {
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                   >
                     <span>
-                      {formData.sports.length > 0 
+                      {formData.sports.length > 0
                         ? formData.sports.map(s => s.name).join(', ')
                         : 'Выберите виды спорта'}
                     </span>
-                    <svg 
-                      className={`w-5 h-5 transition-transform ${dropdownOpen ? 'transform rotate-180' : ''}`} 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
+                    <svg
+                      className={`w-5 h-5 transition-transform ${dropdownOpen ? 'transform rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -241,7 +292,7 @@ export const ProfileForm = () => {
                 </div>
               ) : (
                 <div className="px-4 py-3 bg-gray-50 rounded-lg">
-                  {formData.sports.length > 0 
+                  {formData.sports.length > 0
                     ? formData.sports.map(s => s.name).join(', ')
                     : 'Не указано'}
                 </div>
