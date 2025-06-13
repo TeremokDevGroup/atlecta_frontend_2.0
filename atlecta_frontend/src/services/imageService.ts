@@ -30,7 +30,7 @@ export const uploadObjectImage = async (placemarkId: number, file: File) => {
   formData.append("files", file);
 
   try {
-    await http.post(`/sports/sports/objects/${placemarkId}/images`, formData, {
+    await http.post(`/sports/objects/${placemarkId}/images`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   } catch (error) {
