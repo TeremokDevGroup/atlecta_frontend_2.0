@@ -4,7 +4,8 @@ export interface Placemark {
   y_coord: number;
   address: string;
   tags: { name: string }[];
-  id?: number
+  inventory?: { amount: number; inventory: { name: string } }[];
+  id?: number;
 }
 
 export interface PlacemarkClickInfo {
