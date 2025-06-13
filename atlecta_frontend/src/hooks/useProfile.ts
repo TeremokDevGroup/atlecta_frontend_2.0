@@ -26,14 +26,30 @@ export const useProfile = () => {
     fetchProfile();
   }, []);
 
-  const updateProfile = async (updatedData: UserProfile) => {
-    try {
-      await http.patch(`/users/profiles/me`, updatedData);
-      console.log('Профиль обновлён:', updatedData);
-    } catch (error) {
-      console.error('Ошибка обновления профиля:', error);
-    }
-  };
+const updateProfile = async (updatedData: UserProfile) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { sports, images, ...profileParams } = updatedData;
+    
+    // Формируем URL с query параметрами
+    const queryString = new URLSearchParams();
+    Object.entries(profileParams).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        queryString.append(key, String(value));
+      }
+    });
+
+    const url = `/users/profiles/me?${queryString.toString()}`;
+    
+    // Отправляем массив sports напрямую (без обертки в объект)
+    await http.patch(url, sports);
+    
+    console.log('Профиль обновлён:', { ...profileParams, sports });
+  } catch (error) {
+    console.error('Ошибка обновления профиля:', error);
+    throw error;
+  }
+};
 
   const uploadProfileImage = async (file: File) => {
     const formData = new FormData();
