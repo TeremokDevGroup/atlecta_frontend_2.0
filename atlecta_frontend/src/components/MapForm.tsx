@@ -64,22 +64,22 @@ const MapForm = ({ initialCoords, onClose }: MapFormProps) => {
         onChange={handleChange}
         required
       />
-      <label className='text-black'>Широта</label>
-      <input
-        className="w-full border p-2 rounded"
-        name="x_coord"
-        placeholder="Широта"
-        value={formData.x_coord}
-        onChange={handleChange}
-        required
-        type="number"
-      />
       <label className='text-black'>Долгота</label>
       <input
         className="w-full border p-2 rounded"
         name="y_coord"
-        placeholder="Долгота"
+        placeholder="Широта"
         value={formData.y_coord}
+        onChange={handleChange}
+        required
+        type="number"
+      />
+      <label className='text-black'>Широта</label>
+      <input
+        className="w-full border p-2 rounded"
+        name="x_coord"
+        placeholder="Долгота"
+        value={formData.x_coord}
         onChange={handleChange}
         required
         type="number"
