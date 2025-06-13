@@ -1,4 +1,3 @@
-// src/components/ProfileForm.tsx
 import { useEffect, useState } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import { UserProfile } from '../types/user';
@@ -10,14 +9,13 @@ export const ProfileForm = () => {
   const [availableSports, setAvailableSports] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(
-    formData?.images?.length ? formData.images.length - 1 : 0
-  );
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Инициализируем 0
 
   useEffect(() => {
     if (profile) {
       getTags().then(setAvailableSports).catch(console.error);
       setFormData(profile);
+      setCurrentImageIndex(profile.images?.length ? profile.images.length - 1 : 0); // Устанавливаем последний индекс
     }
   }, [profile]);
 
@@ -33,7 +31,9 @@ export const ProfileForm = () => {
     if (!file) return;
 
     try {
-      await uploadProfileImage(file);
+      const updatedProfile = await uploadProfileImage(file);
+      setFormData(updatedProfile); // Синхронизируем formData с обновлённым профилем
+      setCurrentImageIndex(updatedProfile.images.length - 1); // Переходим к новому фото
       alert('Фото успешно обновлено!');
     } catch {
       alert('Ошибка при загрузке фото');
@@ -124,8 +124,7 @@ export const ProfileForm = () => {
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className={`w-3 h-3 rounded-full transition-all ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                              }`}
+                            className={`w-3 h-3 rounded-full transition-all ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
                           />
                         ))}
                       </div>
@@ -159,7 +158,7 @@ export const ProfileForm = () => {
                     name="first_name"
                     value={formData.first_name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                   />
                 ) : (
                   <div className="px-4 py-3 bg-gray-50 rounded-lg">{formData.first_name || '—'}</div>
@@ -174,7 +173,7 @@ export const ProfileForm = () => {
                     name="last_name"
                     value={formData.last_name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                   />
                 ) : (
                   <div className="px-4 py-3 bg-gray-50 rounded-lg">{formData.last_name || '—'}</div>
@@ -190,7 +189,7 @@ export const ProfileForm = () => {
                     type="number"
                     value={formData.age}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                   />
                 ) : (
                   <div className="px-4 py-3 bg-gray-50 rounded-lg">{formData.age || '—'}</div>
@@ -206,7 +205,7 @@ export const ProfileForm = () => {
                     type="number"
                     value={formData.height}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                   />
                 ) : (
                   <div className="px-4 py-3 bg-gray-50 rounded-lg">{formData.height || '—'}</div>
@@ -222,7 +221,7 @@ export const ProfileForm = () => {
                     type="number"
                     value={formData.weight}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                   />
                 ) : (
                   <div className="px-4 py-3 bg-gray-50 rounded-lg">{formData.weight || '—'}</div>
@@ -239,7 +238,7 @@ export const ProfileForm = () => {
                   value={formData.bio}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
                 />
               ) : (
                 <div className="px-4 py-3 bg-gray-50 rounded-lg whitespace-pre-line">
