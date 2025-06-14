@@ -29,7 +29,7 @@ const FeedPage = () => {
 
   return (
     <div className="bg-white min-h-screen w-full pt-14">
-      <div className="px-4 py-8 max-w-7xl mx-auto">
+      <div className="px-4 py-8 w-full">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold text-blue-900">ЛЕНТА</h1>
           <button
@@ -43,9 +43,9 @@ const FeedPage = () => {
           {usersData.length} активных пользователей
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-7 gap-6">
           {usersData.map((user) => (
-            <div key={user.user_id} className="w-full max-w-sm">
+            <div key={user.user_id} className="min-w-0 flex-1">
               <UserCard
                 user={user}
                 onClick={() => navigate(`/profile/${user.user_id}`)}
