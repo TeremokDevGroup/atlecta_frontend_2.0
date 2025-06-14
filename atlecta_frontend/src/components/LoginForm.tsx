@@ -1,5 +1,6 @@
 // src/components/LoginForm.tsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../services/authService';
 import { useAuthToken } from "../hooks/useAuthToken";
 
@@ -9,6 +10,7 @@ export const LoginForm = () => {
     const [error, setError] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const { setToken } = useAuthToken();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,7 +20,8 @@ export const LoginForm = () => {
             const response = await login(email, password);
             const token = response.data.access_token;
             setToken(token);
-            alert('Успешный вход!');
+            // alert('Успешный вход!');
+            navigate('/feed');
         } catch {
             setError('Неверные данные для входа');
         }
