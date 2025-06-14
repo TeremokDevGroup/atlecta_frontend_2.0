@@ -229,24 +229,6 @@ export const ProfileForm = () => {
               </div>
             </div>
 
-            {/* О себе */}
-            <div>
-              <label className="block text-gray-700 font-medium mb-2">О себе</label>
-              {isEditing ? (
-                <textarea
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
-                />
-              ) : (
-                <div className="px-4 py-3 bg-gray-50 rounded-lg whitespace-pre-line">
-                  {formData.bio || '—'}
-                </div>
-              )}
-            </div>
-
             {/* Виды спорта */}
             <div>
               <label className="block text-gray-700 font-medium mb-2">Предпочитаемые виды спорта</label>
@@ -294,6 +276,24 @@ export const ProfileForm = () => {
                   {formData.sports.length > 0
                     ? formData.sports.map(s => s.name).join(', ')
                     : 'Не указано'}
+                </div>
+              )}
+            </div>
+
+            {/* О себе */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">О себе</label>
+              {isEditing ? (
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                />
+              ) : (
+                <div className="px-4 py-3 bg-gray-50 rounded-lg whitespace-pre-line">
+                  {formData.bio || '—'}
                 </div>
               )}
             </div>
