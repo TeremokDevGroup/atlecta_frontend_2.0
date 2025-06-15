@@ -45,13 +45,28 @@ export const getAllUsers = async (): Promise<UserProfile[]> => {
   return modifiedProfiles;
 };
 
-export const getFilteredUsers = async (filters: { sports?: string[]; orderBy?: string[] }): Promise<UserProfile[]> => {
+export const getFilteredUsers = async (filters: {
+  sports?: string[];
+  gender?: string;
+  ageMin?: number;
+  ageMax?: number;
+  orderBy?: string[];
+}): Promise<UserProfile[]> => {
   const params = new URLSearchParams();
   if (filters.sports && filters.sports.length > 0) {
-    params.append("sports__name__in", filters.sports.join(","));
+    params.append('sports__in', filters.sports.join(','));
+  }
+  if (filters.gender) {
+    params.append('gender__eq', filters.gender);
+  }
+  if (filters.ageMin) {
+    params.append('age__gte', filters.ageMin.toString());
+  }
+  if (filters.ageMax) {
+    params.append('age__lt', filters.ageMax.toString());
   }
   if (filters.orderBy && filters.orderBy.length > 0) {
-    params.append("order_by", filters.orderBy.join(","));
+    params.append('order_by', filters.orderBy.join(','));
   }
 
   const response = await http.get<UserProfile[]>(`/users/profiles?${params.toString()}`);
@@ -60,7 +75,7 @@ export const getFilteredUsers = async (filters: { sports?: string[]; orderBy?: s
     ...profile,
     images: profile.images.map((image: UserImage) => ({
       ...image,
-      url: image.url ? `${BASE_URL}${image.url}` : "",
+      url: image.url ? `${BASE_URL}${image.url}` : '',
     })),
   }));
 
