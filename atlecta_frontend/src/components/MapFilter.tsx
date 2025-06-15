@@ -48,7 +48,7 @@ const MapFilter = ({ onApply, onReset }: MapFilterProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-xl p-4 w-64">
+    <div className="bg-white rounded-lg shadow-xl p-4 w-64 mt-5">
       <div className="mb-4">
         <label className="block text-xs font-medium text-gray-700 mb-1">Виды спорта</label>
         <div className="relative">
