@@ -68,21 +68,24 @@ const UserCard = ({ user, onClick }: Props) => {
           {/* Теги */}
           <div className="mt-2">
             <div className="flex flex-wrap gap-1.5">
-              {user.sports.slice(0, 2).map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-black text-white text-sm px-2.5 py-1 rounded-md font-semibold line-clamp-1"
-                >
-                  {tag.name}
-                </span>
-              ))}
+              {[...user.sports]
+                .sort((a, b) => a.name.length - b.name.length) // Сортируем по длине названия
+                .slice(0, 2) // Берем первые два самых коротких
+                .map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-black text-white text-sm px-2.5 py-1 rounded-md font-semibold line-clamp-1"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
             </div>
 
             {user.sports.length > 2 && (
               <button
                 ref={tagsButtonRef}
                 onClick={toggleTagsPopup}
-                className="text-white text-sm mt-1.5 hover:underline"
+                className="text-white text-sm mt-0.5 hover:underline"
               >
                 +{user.sports.length - 2} ещё
               </button>
