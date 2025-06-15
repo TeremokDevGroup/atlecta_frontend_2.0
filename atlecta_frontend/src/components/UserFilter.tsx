@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { getTags } from '../services/tagService';
 
 interface UserFilterProps {
-  initialFilters: { sports?: string[]; orderBy?: string[] };
-  onApply: (filters: { sports?: string[]; orderBy?: string[] }) => void;
+  initialFilters: { sports?: string[]; gender?: string; ageMin?: number; ageMax?: number; orderBy?: string[] };
+  onApply: (filters: { sports?: string[]; gender?: string; ageMin?: number; ageMax?: number; orderBy?: string[] }) => void;
   onReset: () => void;
   onClose: () => void;
 }
 
 const UserFilter = ({ initialFilters, onApply, onReset, onClose }: UserFilterProps) => {
   const [selectedSports, setSelectedSports] = useState<string[]>(initialFilters.sports || []);
+  const [selectedGender, setSelectedGender] = useState<string | undefined>(initialFilters.gender);
+  const [ageMin, setAgeMin] = useState<number | undefined>(initialFilters.ageMin);
+  const [ageMax, setAgeMax] = useState<number | undefined>(initialFilters.ageMax);
   const [sortParams, setSortParams] = useState<{ field: string; direction: 'asc' | 'desc' }[]>(
     initialFilters.orderBy?.map((param) => ({
       field: param.startsWith('-') ? param.slice(1) : param,
@@ -37,6 +40,9 @@ const UserFilter = ({ initialFilters, onApply, onReset, onClose }: UserFilterPro
 
   useEffect(() => {
     setSelectedSports(initialFilters.sports || []);
+    setSelectedGender(initialFilters.gender);
+    setAgeMin(initialFilters.ageMin);
+    setAgeMax(initialFilters.ageMax);
     setSortParams(
       initialFilters.orderBy?.map((param) => ({
         field: param.startsWith('-') ? param.slice(1) : param,
@@ -66,11 +72,20 @@ const UserFilter = ({ initialFilters, onApply, onReset, onClose }: UserFilterPro
 
   const handleApply = () => {
     const orderBy = sortParams.map((p) => (p.direction === 'desc' ? `-${p.field}` : p.field));
-    onApply({ sports: selectedSports, orderBy: orderBy.length > 0 ? orderBy : undefined });
+    onApply({
+      sports: selectedSports,
+      gender: selectedGender,
+      ageMin,
+      ageMax,
+      orderBy: orderBy.length > 0 ? orderBy : undefined,
+    });
   };
 
   const handleReset = () => {
     setSelectedSports([]);
+    setSelectedGender(undefined);
+    setAgeMin(undefined);
+    setAgeMax(undefined);
     setSortParams([]);
     onReset();
   };
@@ -140,6 +155,39 @@ const UserFilter = ({ initialFilters, onApply, onReset, onClose }: UserFilterPro
               )}
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-xs font-medium text-gray-600 mb-1">Пол</label>
+        <select
+          value={selectedGender || ''}
+          onChange={(e) => setSelectedGender(e.target.value || undefined)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black text-xs"
+        >
+          <option value="">Выберите пол</option>
+          <option value="male">Мужской</option>
+          <option value="female">Женский</option>
+        </select>
+      </div>
+
+      <div className="mb-4 ">
+        <label className="block text-xs font-medium text-gray-700 mb-1">Возраст</label>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            placeholder="От"
+            value={ageMin || ''}
+            onChange={(e) => setAgeMin(e.target.value ? Number(e.target.value) : undefined)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-xs bg-white text-black"
+          />
+          <input
+            type="number"
+            placeholder="До"
+            value={ageMax || ''}
+            onChange={(e) => setAgeMax(e.target.value ? Number(e.target.value) : undefined)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-xs bg-white text-black"
+          />
         </div>
       </div>
 

@@ -7,7 +7,13 @@ import { UserProfile } from "../types/user";
 
 const FeedPage = () => {
   const [usersData, setUsersData] = useState<UserProfile[]>([]);
-  const [filters, setFilters] = useState<{ sports?: string[]; orderBy?: string[] }>({});
+  const [filters, setFilters] = useState<{
+    sports?: string[];
+    gender?: string;
+    ageMin?: number;
+    ageMax?: number;
+    orderBy?: string[];
+  }>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +22,13 @@ const FeedPage = () => {
       .catch(console.error);
   }, [filters]);
 
-  const handleApplyFilters = (newFilters: { sports?: string[]; orderBy?: string[] }) => {
+  const handleApplyFilters = (newFilters: {
+    sports?: string[];
+    gender?: string;
+    ageMin?: number;
+    ageMax?: number;
+    orderBy?: string[];
+  }) => {
     setFilters(newFilters);
   };
 

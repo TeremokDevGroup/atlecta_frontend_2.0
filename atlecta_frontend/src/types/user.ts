@@ -17,8 +17,3 @@ export interface UserImage {
   is_profile_picture: boolean;
   uploaded_at: string;
 }
-
-export interface UserFilter {
-  sports?: string[];
-  orderBy?: string[];
-}
